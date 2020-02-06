@@ -1,0 +1,46 @@
+server:
+  port: 3000
+
+spring:
+  application:
+    name: jleopard-auth
+  profiles:
+    active: dev
+  # 配置中心
+#  cloud:
+#    config:
+#      username: lpadmin
+#      password: lpadmin
+#      fail-fast: true
+#      name: ${spring.application.name}
+#      profile: ${spring.profiles.active}
+#      discovery:
+#        enabled: true
+#        service-id: lpadmin-config
+  main:
+    allow-bean-definition-overriding: true
+
+# 注册中心配置
+eureka:
+  instance:
+    prefer-ip-address: true
+    # 10s未收到心跳，剔除instance 要比心跳时间大
+    lease-expiration-duration-in-seconds: 10
+    # 心跳时间
+    lease-renewal-interval-in-seconds: 5
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.name}${random.int}:${server.port}
+  client:
+    registry-fetch-interval-seconds: 20   #多久拉取服务注册信息 s
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone:  http://jleopard:jleopard@192.168.198.100:8761/eureka/
+
+security:
+  oauth2:
+    client:
+      client-id: jleopard
+      client-secret: "{bcrypt}$2a$10$IegDob5gZAfGDfWRwJjuVO9B6zj0hWRNKTO6zm.LlIuNBkUASjsuu"
+      scope: ALL
+      authorization-grant-type: password # ,password,client_credentials,implicit,refresh_token
+      authorities: WRITE

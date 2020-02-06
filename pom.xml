@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.jleopard</groupId>
+        <artifactId>jleopard-parent</artifactId>
+        <version>1.0.0</version>
+    </parent>
+    <artifactId>jleopard-admin</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.0</version>
+    <modules>
+        <module>jleopard-system</module>
+        <module>jleopard-auth</module>
+        <module>jleopard-gateway</module>
+        <module>jleopard-monitor</module>
+    </modules>
+    <properties>
+        <jleopard.version>1.0.0</jleopard.version>
+        <docker.plugin.version>1.0.0</docker.plugin.version>
+        <docker.host>http://192.168.198.100:2375</docker.host>
+        <docker.registry>172.17.0.111</docker.registry>
+        <docker.namespace>library</docker.namespace>
+        <docker.username>admin</docker.username>
+        <docker.password>Harbor12345</docker.password>
+        <docker.image.prefix>jleopard</docker.image.prefix>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.jleopard</groupId>
+                <artifactId>jleopard-cloud-starter</artifactId>
+                <version>${jleopard.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jleopard</groupId>
+                <artifactId>jleopard-web-springboot-starter</artifactId>
+                <version>${jleopard.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jleopard</groupId>
+                <artifactId>jleopard-resource-server-springboot-starter</artifactId>
+                <version>${jleopard.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jleopard</groupId>
+                <artifactId>jleopard-data-springboot-starter</artifactId>
+                <version>${jleopard.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jleopard</groupId>
+                <artifactId>jleopard-quartz-springboot-starter</artifactId>
+                <version>${jleopard.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.spotify</groupId>
+                    <artifactId>docker-maven-plugin</artifactId>
+                    <version>${docker.plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+</project>

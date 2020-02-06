@@ -1,0 +1,73 @@
+server:
+  port: 7001
+
+spring:
+  application:
+    name: jleopard-gateway
+  profiles:
+    active: dev
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: jleopard-auth
+          uri: lb://jleopard-auth
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=1
+        - id: jleopard-system
+          uri: lb://jleopard-system
+          predicates:
+            - Path=/sys/**
+          filters:
+            - StripPrefix=1
+        - id: jleopard-monitor
+          uri: lb://jleopard-monitor
+          predicates:
+            - Path=/monitor/**
+          filters:
+            - StripPrefix=1
+  # 配置中心
+  #    config:
+#      username: jleopard
+#      password: jleopard
+#      fail-fast: true
+#      name: ${spring.application.name}
+#      profile: ${spring.profiles.active}
+#      discovery:
+#        enabled: true
+#        service-id: jleopard-config
+  main:
+    allow-bean-definition-overriding: true
+
+# 注册中心配置
+eureka:
+  instance:
+    prefer-ip-address: true
+    # 10s未收到心跳，剔除instance 要比心跳时间大
+    lease-expiration-duration-in-seconds: 10
+    # 心跳时间
+    lease-renewal-interval-in-seconds: 5
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.name}${random.int}:${server.port}
+  client:
+    registry-fetch-interval-seconds: 20   #多久拉取服务注册信息 s
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone:  http://jleopard:jleopard@192.168.198.100:8761/eureka/
+ribbon:
+  eureka:
+    enabled: true
+  connect-timeout: 3000
+  read-timeout: 5000
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 50000
