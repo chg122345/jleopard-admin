@@ -1,0 +1,147 @@
+server:
+  port: 5001
+spring:
+  application:
+    name: jleopard-activiti
+  mvc:
+    view:
+      prefix: classpath:/templates
+      suffix: .html
+    static-path-pattern: /static/**
+  resources:
+    static-locations: classpath:/static
+  thymeleaf:
+    mode: LEGACYHTML5
+    cache: false
+  main:
+    allow-bean-definition-overriding: true
+  jpa:
+    properties:
+      hibernate:
+      # 生产环境设置成 none，避免程序运行时自动更新数据库结构
+        ddl-auto: update
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    open-in-view: true
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+  datasource:
+    druid:
+      type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+      url: jdbc:log4jdbc:mysql://192.168.198.101:3306/bpm?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false
+      username: root
+      password: CNM123456
+      # 初始化连接大小
+      initial-size: 2
+      # 最小空闲连接数
+      min-idle: 2
+      max-active: 20
+      max-wait: 30000
+      # 可关闭的空闲连接间隔时间
+      time-between-eviction-runs-millis: 60000
+      # 配置连接在池中的最小生存时间
+      min-evictable-idle-time-millis: 300000
+      validation-query: select '1' from dual
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      # 打开PSCache，并且指定每个连接上PSCache的大小
+      pool-prepared-statements: true
+      max-open-prepared-statements: 20
+      max-pool-prepared-statement-per-connection-size: 20
+      # 配置监控统计拦截的filters
+      filters: stat
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        reset-enable: false
+        login-username: admin
+        login-password: 123456
+        allow:
+      web-stat-filter:
+        url-pattern: /*
+        exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*"
+  redis:
+    #数据库索引
+    database: 9
+    host: 192.168.198.101
+    port: 6379
+    password: 123456
+    timeout: 5000
+    jedis:
+      pool:
+        #最大连接数
+        max-active: 100
+        #最大阻塞等待时间(负数表示没限制)
+        max-wait: 2000
+        #最大空闲
+        max-idle: 500
+        #最小空闲
+        min-idle: 8
+  activiti:
+    check-process-definitions: false
+    database-schema-update: true
+#  cloud:
+#    config:
+#      enabled: false
+#      username: jleopard
+#      password: jleopard
+#      fail-fast: true
+#      name: ${spring.application.name}
+#      profile: dev
+#      discovery:
+#        enabled: false
+#        service-id: jleopard-config
+
+# 注册中心配置
+eureka:
+  instance:
+    prefer-ip-address: true
+    # 10s未收到心跳，剔除instance 要比心跳时间大
+    lease-expiration-duration-in-seconds: 10
+    # 心跳时间
+    lease-renewal-interval-in-seconds: 5
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.name}${random.int}:${server.port}
+#    ip-address: 192.168.198.1
+#    non-secure-port: 8008
+  client:
+    enabled: true
+    registry-fetch-interval-seconds: 20   #多久拉取服务注册信息 s
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone:  http://jleopard:jleopard@192.168.198.100:8761/eureka/
+
+jleopard:
+  logging:
+    enabled: true
+  resource:
+    server:
+      enabled: true
+      resource-id: JLEOPARD-SYSTEM
+      jwt-public-key: "-----BEGIN PUBLIC KEY-----
+                       MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjSYcM4AX0w50y1eijrEc
+                       bCnH86F5f+27X750t90sRebdOzhyGTyp8M2DZ5XpjPYlfX+DVUfe/UeAhtXfRu0j
+                       nnASaTQylG0xRpO0PzdkUKchrtssJlatjnsIyr/8l5otfS9ZL/4mU2SRSZMsnPE+
+                       tztkrtVQRe079yLXuU+MUVGOiSyXAm03VvBTPvAJcFrSdrg4YX3onn8oAf6h/Ypi
+                       5HmlGW8McZP922lNz10HNcPAI4CMO6KkS3fvJmK5vmFSHL8YFKAg8uXnzV8IWBxU
+                       kjEqEnl4POO6Bo/BuCZJSbec6WRgrnmVuMN6DApylQeFuC1/i7H8qB5Bn/Fp15MG
+                       HQIDAQAB
+                       -----END PUBLIC KEY-----"
+  cache:
+    enabled: false
+    serializer-package: org.jleopard.system.entity,org.jleopard.common,model
+  swagger2:
+    enabled: true
+  quartz:
+    enabled: true
+
+#activiti:
+#  database-schema-update: true
+#  check-process-definitions: false
+#  process-definition-location-prefix: classpath:/processes/
+#  #    process-definition-location-suffixes:
+#  #      - **.bpmn
+#  #      - **.bpmn20.xml
+#  history-level: full

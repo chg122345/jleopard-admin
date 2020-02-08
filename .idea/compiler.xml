@@ -7,15 +7,17 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="jleopard-gateway" />
-        <module name="jleopard-auth" />
+        <module name="jleopard-activiti" />
         <module name="jleopard-monitor" />
-        <module name="jleopard-eureka" />
+        <module name="jleopard-auth" />
         <module name="jleopard-system" />
+        <module name="jleopard-eureka" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="jleopard-activiti" options="-parameters" />
       <module name="jleopard-auth" options="-parameters" />
       <module name="jleopard-eureka" options="-parameters" />
       <module name="jleopard-gateway" options="-parameters" />

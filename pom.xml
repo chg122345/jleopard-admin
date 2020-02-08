@@ -17,6 +17,7 @@
         <module>jleopard-gateway</module>
         <module>jleopard-monitor</module>
         <module>jleopard-eureka</module>
+        <module>jleopard-activiti</module>
     </modules>
     <properties>
         <jleopard.version>1.0.0</jleopard.version>
