@@ -20,16 +20,18 @@ import org.jleopard.monitor.service.QuartzJobService;
 import org.jleopard.quartz.QuartzManage;
 import org.jleopard.web.exception.BadRequestException;
 import org.quartz.CronExpression;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -44,11 +46,19 @@ public class QuartzJobServiceImpl extends JLServiceImpl<QuartzJob, String, Quart
 
     private final QuartzLocksRepository locksRepository;
 
-    public QuartzJobServiceImpl(QuartzManage quartzManage, RestTemplate restTemplate, QuartzLocksRepository locksRepository) {
+    private final DiscoveryClient discoveryClient;
+
+    @Value("${spring.application.name:'jleopard-monitor'}")
+    private String applicationName;
+
+    private List<ServiceInstance> otherServerInstance;
+
+    public QuartzJobServiceImpl(QuartzManage quartzManage, RestTemplate restTemplate, QuartzLocksRepository locksRepository, DiscoveryClient discoveryClient) {
         quartzManage.setJobClass(ExecutionQuartzJob.class);
         this.quartzManage = quartzManage;
         this.restTemplate = restTemplate;
         this.locksRepository = locksRepository;
+        this.discoveryClient = discoveryClient;
     }
 
     @Override
@@ -138,5 +148,11 @@ public class QuartzJobServiceImpl extends JLServiceImpl<QuartzJob, String, Quart
             findById(id).ifPresent(quartzManage::deleteJob);
         }
         deleteBatchByIds(ids);
+    }
+
+    @Override
+    public void invokingOtherServerInstance(String params, String sign) {
+        List<ServiceInstance> instances = this.discoveryClient.getInstances(applicationName);
+        instances.forEach(System.out::println);
     }
 }

@@ -9,6 +9,7 @@
         <module name="jleopard-gateway" />
         <module name="jleopard-auth" />
         <module name="jleopard-monitor" />
+        <module name="jleopard-eureka" />
         <module name="jleopard-system" />
       </profile>
     </annotationProcessing>
@@ -16,6 +17,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="jleopard-auth" options="-parameters" />
+      <module name="jleopard-eureka" options="-parameters" />
       <module name="jleopard-gateway" options="-parameters" />
       <module name="jleopard-monitor" options="-parameters" />
       <module name="jleopard-system" options="-parameters" />

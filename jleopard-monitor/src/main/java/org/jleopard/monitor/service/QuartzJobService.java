@@ -25,4 +25,6 @@ public interface QuartzJobService extends JLService<QuartzJob, String> {
     void deleteJobByIds(Set<String> ids);
 
     void execution(String id);
+
+    void invokingOtherServerInstance(String params, String sign);
 }

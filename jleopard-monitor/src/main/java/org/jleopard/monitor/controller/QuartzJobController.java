@@ -72,7 +72,6 @@ public class QuartzJobController {
         return ResponseEntity.ok(map);
     }
 
-
     @Log("执行定时任务")
     @ApiOperation("执行定时任务")
     @PutMapping(value = "/exec/{id}")
@@ -80,5 +79,12 @@ public class QuartzJobController {
         service.execution(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping(value = "/invokingOther/{sign}")
+    public ResponseEntity invokingOtherServerInstance(@RequestBody String json, @PathVariable String sign){
+        service.invokingOtherServerInstance(json, sign);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }
