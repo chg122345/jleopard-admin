@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Api(value = "流程模型Model操作相关", tags = {"activitimodeler"})
 @RestController
-@RequestMapping("models")
+@RequestMapping("model")
 public class ModelController {
 
     @Autowired
@@ -27,18 +27,19 @@ public class ModelController {
 
     @ApiOperation(value = "新建一个空模型")
     @PostMapping
-    public ResponseEntity<?> newModel(String modelName, String description, String key) {
-        return ResponseEntity.ok(modelService.create(modelName, description, key));
+    public ResponseEntity<?> newModel(String name, String description, String key) {
+        return ResponseEntity.ok(modelService.create(name, description, key));
     }
 
     @ApiOperation(value = "获取所有模型")
     @GetMapping
-    public ResponseEntity<?> modelList() {
-        return ResponseEntity.ok(modelService.findAll());
+    public ResponseEntity<?> modelList(@RequestParam(required = false) String name,
+            @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(modelService.findAll(page, size, name));
     }
 
     @ApiOperation(value = "删除模型")
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteModel(@PathVariable("id") String id) {
         modelService.deleteById(id);
         return ResponseEntity.noContent().build();
@@ -52,7 +53,7 @@ public class ModelController {
     }
 
     @ApiOperation(value = "上传一个已有模型")
-    @PostMapping(value = "/uploadFile")
+    @PostMapping(value = "uploadFile")
     public ResponseEntity<?> deployUploadedFile(@RequestParam("file") MultipartFile file) {
         return ResponseEntity.ok(modelService.uploadModel(file));
     }

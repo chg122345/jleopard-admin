@@ -11,9 +11,10 @@ import org.activiti.engine.RepositoryService;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.DeploymentBuilder;
 import org.activiti.engine.repository.Model;
-import org.activiti.explorer.util.XmlUtil;
+import org.activiti.engine.repository.ModelQuery;
 import org.apache.commons.lang3.StringUtils;
 import org.jleopard.activiti.service.ModelService;
+import org.jleopard.activiti.utils.Pagination;
 import org.jleopard.web.exception.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -75,10 +76,20 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public List<Model> findAll(int page, int size) {
-        int start = (page - 1) * size;
-        return repositoryService.createModelQuery()
-                .orderByCreateTime().asc().listPage(start, start + size);
+    public Pagination<Model> findAll(int page, int size, String name) {
+        Pagination<Model> pagination = new Pagination<>(page, size);
+
+        ModelQuery modelQuery = repositoryService.createModelQuery();
+        if (StringUtils.isNotBlank(name)) {
+            modelQuery.modelNameLike(name);
+        }
+        int totalCount = (int) modelQuery.count();
+        int totalPages = (int) Math.ceil(totalCount / size);
+        pagination.setTotalElements(totalCount);
+        pagination.setTotalPages(totalPages);
+        List<Model> models = modelQuery.orderByCreateTime().asc().listPage(pagination.getStart(), pagination.getEnd());
+        pagination.setContent(models);
+        return pagination;
     }
 
     @Override
@@ -131,7 +142,7 @@ public class ModelServiceImpl implements ModelService {
                 assert fileName != null;
                 if (fileName.endsWith(".bpmn20.xml") || fileName.endsWith(".bpmn")) {
                     validFile = true;
-                    XMLInputFactory xif = XmlUtil.createSafeXmlInputFactory();
+                    XMLInputFactory xif = createSafeXmlInputFactory();
                     in = new InputStreamReader(new ByteArrayInputStream(modelFile.getBytes()), "UTF-8");
                     XMLStreamReader xtr = xif.createXMLStreamReader(in);
                     BpmnModel bpmnModel = new BpmnXMLConverter().convertToBpmnModel(xtr);
@@ -180,5 +191,21 @@ public class ModelServiceImpl implements ModelService {
                 }
             }
         }
+    }
+
+    private XMLInputFactory createSafeXmlInputFactory() {
+        XMLInputFactory xif = XMLInputFactory.newInstance();
+        if (xif.isPropertySupported("javax.xml.stream.isReplacingEntityReferences")) {
+            xif.setProperty("javax.xml.stream.isReplacingEntityReferences", false);
+        }
+
+        if (xif.isPropertySupported("javax.xml.stream.isSupportingExternalEntities")) {
+            xif.setProperty("javax.xml.stream.isSupportingExternalEntities", false);
+        }
+
+        if (xif.isPropertySupported("javax.xml.stream.supportDTD")) {
+            xif.setProperty("javax.xml.stream.supportDTD", false);
+        }
+        return xif;
     }
 }

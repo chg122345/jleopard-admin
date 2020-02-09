@@ -180,6 +180,7 @@ activitiModeler
 	            	ORYX._loadPlugins();
 	
 	                var modelId = EDITOR.UTIL.getParameterByName('modelId');
+                    $rootScope.authorization = EDITOR.UTIL.getParameterByName('token');
 	                fetchModel(modelId);
 	
 	                $rootScope.window = {};

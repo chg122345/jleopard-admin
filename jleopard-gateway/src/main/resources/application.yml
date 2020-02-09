@@ -30,6 +30,12 @@ spring:
             - Path=/monitor/**
           filters:
             - StripPrefix=1
+        - id: jleopard-activiti
+          uri: lb://jleopard-activiti
+          predicates:
+            - Path=/activiti/**
+          filters:
+            - StripPrefix=1
   # 配置中心
   #    config:
 #      username: jleopard

@@ -9,12 +9,14 @@
  */
 package org.jleopard.activiti.controller;
 
+import org.jleopard.resource.annotation.JLAnonymousAccess;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class IndexController {
 
+    @JLAnonymousAccess
     @GetMapping(value = {"editor", "/"})
     public String editor() {
         return "modeler";

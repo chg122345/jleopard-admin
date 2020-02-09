@@ -10,14 +10,15 @@
 package org.jleopard.activiti;
 
 import org.jleopard.activiti.config.JsonpCallbackFilter;
+import org.jleopard.cloud.EnableJLeopardCloud;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication(exclude = {
-        org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class,
         org.activiti.spring.boot.SecurityAutoConfiguration.class
 })
+@EnableJLeopardCloud
 public class ActivitiApplication {
 
     public static void main(String[] args) {

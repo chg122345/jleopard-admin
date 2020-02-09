@@ -33,7 +33,9 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
-        if (request.getPath().pathWithinApplication().value().startsWith("/auth")) {
+        if (request.getPath().pathWithinApplication().value().startsWith("/auth") ||
+                request.getPath().pathWithinApplication().value().startsWith("/sys/druid") ||
+                request.getPath().pathWithinApplication().value().startsWith("/activiti/editor")) {
             return chain.filter(exchange);
         }
         String token = request.getHeaders().getFirst("Authorization");

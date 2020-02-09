@@ -20,6 +20,7 @@ import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jleopard.resource.annotation.JLAnonymousAccess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -41,9 +42,10 @@ public class ActivitiController {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @JLAnonymousAccess
     @RequestMapping(value="/editor/stencilset", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
     public String getStencilSet() {
-        InputStream stream = this.getClass().getClassLoader().getResourceAsStream("bpm.json");
+        InputStream stream = this.getClass().getClassLoader().getResourceAsStream("stencilset_zh.json");
         try {
             assert stream != null;
             return IOUtils.toString(stream, "utf-8");
@@ -52,6 +54,7 @@ public class ActivitiController {
         }
     }
 
+    @JLAnonymousAccess
     @RequestMapping(value = "/model/{modelId}/json", method = RequestMethod.GET, produces = "application/json")
     public ObjectNode getEditorJson(@PathVariable String modelId) {
         ObjectNode modelNode = null;

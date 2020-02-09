@@ -129,6 +129,7 @@ jleopard:
                        kjEqEnl4POO6Bo/BuCZJSbec6WRgrnmVuMN6DApylQeFuC1/i7H8qB5Bn/Fp15MG
                        HQIDAQAB
                        -----END PUBLIC KEY-----"
+      ignore-uri: "/editor-app/**,/*.html,/**/*.html,/**/*.css,/**/*.js"
   cache:
     enabled: false
     serializer-package: org.jleopard.system.entity,org.jleopard.common,model

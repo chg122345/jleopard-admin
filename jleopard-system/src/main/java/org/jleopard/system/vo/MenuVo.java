@@ -27,7 +27,7 @@ public class MenuVo implements Comparable<MenuVo> {
     @JsonIgnore
     private String id;
     @JsonIgnore
-    private Integer sort;
+    private Integer sort = 999;
     private String name;
     private String path;
     private String redirect;
