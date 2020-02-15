@@ -13,6 +13,8 @@ import org.jleopard.common.base.JLService;
 import org.jleopard.system.entity.User;
 import org.jleopard.system.vo.UserAuthVo;
 import org.jleopard.system.vo.UserVo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 public interface UserService extends JLService<User, String> {
 
@@ -23,4 +25,8 @@ public interface UserService extends JLService<User, String> {
     UserVo findUserInfo(String id);
 
     int resetPassword(String id, String password);
+
+    Page<User> findByRoleId(String roleId, String name, PageRequest pageRequest);
+
+    int removeRole(String roleId, String userId);
 }

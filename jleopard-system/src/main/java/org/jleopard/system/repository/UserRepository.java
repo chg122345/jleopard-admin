@@ -11,6 +11,8 @@ package org.jleopard.system.repository;
 
 import org.jleopard.data.base.JLRepository;
 import org.jleopard.system.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -23,7 +25,14 @@ public interface UserRepository extends JLRepository<User, String> {
 
     User findOneByAccount(String account);
 
+    @Query(value = "select u.* from sys_user u LEFT JOIN sys_user_role ur ON u.id = ur.user_id WHERE ur.role_id = :roleId AND if(:name IS NOT NULL, u.name LIKE %:name%, 1 = 1)", nativeQuery = true)
+    Page<User> findByRoleId(@Param("roleId") String roleId, @Param("name") String name, Pageable page);
+
     @Modifying
     @Query("update User set password=:password where id=:id")
     int updatePasswordById(@Param("id") String id, @Param("password") String password);
+
+    @Modifying
+    @Query(value = "delete from sys_user_role where role_id=:roleId AND user_id = :userId", nativeQuery = true)
+    int removeRole(@Param("roleId") String id, @Param("userId") String userId);
 }

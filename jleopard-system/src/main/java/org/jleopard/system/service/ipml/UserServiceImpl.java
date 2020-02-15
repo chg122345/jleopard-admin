@@ -22,6 +22,8 @@ import org.jleopard.system.vo.UserVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -108,6 +110,17 @@ public class UserServiceImpl extends JLServiceImpl<User,String, UserRepository> 
     public int resetPassword(String id, String password) {
         String encode = PasswordEncoderFactories.createDelegatingPasswordEncoder().encode(password);
         return repository.updatePasswordById(id, encode);
+    }
+
+    @Override
+    public Page<User> findByRoleId(String roleId, String name, PageRequest pageRequest) {
+        return repository.findByRoleId(roleId, name, pageRequest);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public int removeRole(String roleId, String userId) {
+        return repository.removeRole(roleId, userId);
     }
 
 }

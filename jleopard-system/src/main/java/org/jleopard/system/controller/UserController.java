@@ -21,10 +21,7 @@ import org.jleopard.system.vo.UserAuthVo;
 import org.jleopard.system.vo.UserVo;
 import org.jleopard.web.controller.JLController;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -59,6 +56,17 @@ public class UserController extends JLController<User, String, UserService> {
     @ApiOperation(value="重置密码", notes="通过id重置密码")
     public ResponseEntity<?> resetPwd(String id, String password) {
         int i = service.resetPassword(id, password);
+        if (i > 0) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.unprocessableEntity().build();
+    }
+
+    @DeleteMapping("/removeRole")
+    @Log(value = "删除角色", type = LogTypeEnum.WRITE)
+    @ApiOperation(value="删除角色", notes="通过角色id，用户id删除角色")
+    public ResponseEntity<?> removeRole(String roleId, String userId) {
+        int i = service.removeRole(roleId, userId);
         if (i > 0) {
             return ResponseEntity.noContent().build();
         }

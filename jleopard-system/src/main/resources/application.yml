@@ -91,7 +91,7 @@ eureka:
     lease-renewal-interval-in-seconds: 5
     instance-id: ${spring.cloud.client.hostname}:${spring.application.name}${random.int}:${server.port}
 #    ip-address: 192.168.198.1
-#    non-secure-port: 8008
+#    non-secure-port: ${server.port}
   client:
     enabled: true
     registry-fetch-interval-seconds: 20   #多久拉取服务注册信息 s
