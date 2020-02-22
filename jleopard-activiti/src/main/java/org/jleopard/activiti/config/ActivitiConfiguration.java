@@ -11,6 +11,7 @@ package org.jleopard.activiti.config;
 
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngineConfiguration;
+import org.activiti.image.impl.DefaultProcessDiagramGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,6 +33,7 @@ public class ActivitiConfiguration {
         configuration.setDatabaseSchemaUpdate(ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE);
         //关闭计时器
         configuration.setAsyncExecutorActivate(false);
+        configuration.setProcessDiagramGenerator(new DefaultProcessDiagramGenerator());
         return configuration;
     }
     //得到程序执行引擎 所有操作对应的表几乎都是通过他进行获取

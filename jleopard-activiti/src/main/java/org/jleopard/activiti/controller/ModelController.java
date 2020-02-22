@@ -27,8 +27,8 @@ public class ModelController {
 
     @ApiOperation(value = "新建一个空模型")
     @PostMapping
-    public ResponseEntity<?> newModel(String name, String description, String key) {
-        return ResponseEntity.ok(modelService.create(name, description, key));
+    public ResponseEntity<?> newModel(String name, String key, String category, String description) {
+        return ResponseEntity.ok(modelService.create(name, key, category, description));
     }
 
     @ApiOperation(value = "获取所有模型")

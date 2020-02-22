@@ -10,7 +10,7 @@ import java.util.List;
 /** 流程模型管理的接口 */
 public interface ModelService {
     /** 新建一个模型 */
-    Model create(String modelName, String description, String key);
+    Model create(String name, String key, String category, String description);
 
     /** 获取所有模型 */
    List<Model> findAll();

@@ -40,17 +40,15 @@ public class ModelServiceImpl implements ModelService {
     ObjectMapper objectMapper;
 
     @Override
-    public Model create(String modelName, String description, String key) {
+    public Model create(String name, String key, String category, String description) {
         //初始化一个空模型
         Model model = repositoryService.newModel();
-        //int revision = 1;
-
         ObjectNode modelNode = objectMapper.createObjectNode();
-        modelNode.put(ModelDataJsonConstants.MODEL_NAME, modelName);
+        modelNode.put(ModelDataJsonConstants.MODEL_NAME, name);
         modelNode.put(ModelDataJsonConstants.MODEL_DESCRIPTION, description);
-//        modelNode.put(ModelDataJsonConstants.MODEL_REVISION, revision);
-        model.setName(modelName);
+        model.setName(name);
         model.setKey(key);
+        model.setCategory(category);
         model.setMetaInfo(modelNode.toString());
         repositoryService.saveModel(model);
         String id = model.getId();
@@ -62,12 +60,8 @@ public class ModelServiceImpl implements ModelService {
         stencilSetNode.put("namespace",
                 "http://b3mn.org/stencilset/bpmn2.0#");
         editorNode.put("stencilset", stencilSetNode);
-        try {
-            repositoryService.addModelEditorSource(id, editorNode.toString().getBytes("utf-8"));
-            return model;
-        } catch (UnsupportedEncodingException e) {
-            throw new BadRequestException(e.getMessage());
-        }
+        repositoryService.addModelEditorSource(id, editorNode.toString().getBytes(StandardCharsets.UTF_8));
+        return model;
     }
 
     @Override
