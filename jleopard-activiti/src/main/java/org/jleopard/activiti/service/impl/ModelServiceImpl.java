@@ -75,7 +75,7 @@ public class ModelServiceImpl implements ModelService {
 
         ModelQuery modelQuery = repositoryService.createModelQuery();
         if (StringUtils.isNotBlank(name)) {
-            modelQuery.modelNameLike(name);
+            modelQuery.modelNameLike("%" + name + "%");
         }
         int totalCount = (int) modelQuery.count();
         int totalPages = (int) Math.ceil(totalCount / size);

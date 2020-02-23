@@ -17,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-@Api(value = "流程模型Model操作相关", tags = {"activitimodeler"})
+@Api(value = "流程模型Model操作相关", tags = {"流程模型Model操作相关"})
 @RestController
 @RequestMapping("model")
 public class ModelController {

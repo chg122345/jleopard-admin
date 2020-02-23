@@ -12,11 +12,12 @@ package org.jleopard.activiti.dto;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 @Data
-public class FormDto {
+public class FormDto implements Serializable {
 
     //任务名称
     private String actName;

@@ -4,7 +4,6 @@ import org.activiti.engine.repository.Model;
 import org.jleopard.activiti.utils.Pagination;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
 import java.util.List;
 
 /** 流程模型管理的接口 */
@@ -26,7 +25,5 @@ public interface ModelService {
 
     /** 上传已有xml文件，并生成相应模型*/
     Model uploadModel(MultipartFile modelFile);
-
-
 
 }

@@ -9,23 +9,26 @@
  */
 package org.jleopard.activiti.utils;
 
+import lombok.extern.slf4j.Slf4j;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowNode;
 import org.activiti.bpmn.model.SequenceFlow;
 import org.activiti.engine.history.HistoricActivityInstance;
-import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
-import org.springframework.util.StringUtils;
+import org.springframework.beans.BeanUtils;
 
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public class ProcessUtils {
 
-    public static List<String> getHighLightedFlows(BpmnModel bpmnModel, ProcessDefinitionEntity processDefinitionEntity, List<HistoricActivityInstance> historicActivityInstances) {
+    public static List<String> getHighLightedFlows(BpmnModel bpmnModel, List<HistoricActivityInstance> historicActivityInstances) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //24小时制
         List<String> highFlows = new ArrayList<>();// 用以保存高亮的线flowId
         for (int i = 0; i < historicActivityInstances.size() - 1; i++) {
@@ -111,4 +114,36 @@ public class ProcessUtils {
         }
     }
 
+    /**
+     * 把指定的复杂对象属性，按照指定的内容，封装到新的map中
+     * @param source 目标对象
+     * @param fields     需要封装到map中的属性
+     */
+    public static Map<String, Object> obj2Map(Object source, String[] fields) {
+        Map<String, Object> map = new HashMap<>();
+        if (source == null)
+            return null;
+        if (fields == null || fields.length < 1) {
+            return null;
+        }
+        for (String p : fields) {
+            PropertyDescriptor sourcePd = BeanUtils.getPropertyDescriptor(
+                    source.getClass(), p);
+            if (sourcePd != null && sourcePd.getReadMethod() != null) {
+                try {
+                    Method readMethod = sourcePd.getReadMethod();
+                    if (!Modifier.isPublic(readMethod.getDeclaringClass()
+                            .getModifiers())) {
+                        readMethod.setAccessible(true);
+                    }
+                    Object value = readMethod.invoke(source, new Object[0]);
+                    map.put(p, value);
+                } catch (Exception ex) {
+                    log.error("字段：[" + p + "]拷贝失败", ex);
+                    continue;
+                }
+            }
+        }
+        return map;
+    }
 }

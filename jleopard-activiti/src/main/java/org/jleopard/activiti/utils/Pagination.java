@@ -39,7 +39,7 @@ public class Pagination<T> {
         setSize(size);
     }
 
-    public static Pagination getInstance(int page, int size) {
+    public static Pagination of(int page, int size) {
         return new Pagination<>(page, size);
     }
 
