@@ -11,10 +11,12 @@ package org.jleopard.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
 @EnableDiscoveryClient
+@EntityScan("org.jleopard.gateway.entity")
 public class GatewayApplication {
 
     public static void main(String[] args) {

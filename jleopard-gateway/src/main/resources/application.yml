@@ -46,6 +46,20 @@ spring:
 #      discovery:
 #        enabled: true
 #        service-id: jleopard-config
+  jpa:
+    properties:
+      hibernate:
+        ddl-auto: update
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    open-in-view: true
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.198.101:3306/route?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false
+    username: root
+    password: CNM123456
   main:
     allow-bean-definition-overriding: true
 
@@ -77,3 +91,12 @@ hystrix:
         isolation:
           thread:
             timeoutInMilliseconds: 50000
+
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: '*'
+#  endpoint:
+#    health:
+#      show-details: always
