@@ -12,17 +12,13 @@ package org.jleopard.system.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.jleopard.system.entity.Logging;
-import org.jleopard.system.query.LoggingQueryDto;
+import org.jleopard.system.dto.LoggingQueryDto;
 import org.jleopard.system.service.LoggingService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 @Api(tags="日志操作")

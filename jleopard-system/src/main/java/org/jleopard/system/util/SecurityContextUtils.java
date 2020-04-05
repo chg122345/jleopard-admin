@@ -18,6 +18,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.security.Principal;
 import java.util.Map;
+import java.util.Optional;
 
 @UtilityClass
 public class SecurityContextUtils {
@@ -36,5 +37,17 @@ public class SecurityContextUtils {
             throw new RuntimeException("获取用户失败");
         }
         return map;
+    }
+
+    public Optional<String> getCurrentUserId() {
+        Authentication authentication = getAuthentication();
+        if (authentication == null) {
+            return Optional.empty();
+        }
+        Map<String, Object> map = (Map<String, Object>) authentication.getPrincipal();
+        if (CollectionUtils.isEmpty(map)) {
+           return Optional.empty();
+        }
+        return Optional.of((String)map.get("id"));
     }
 }

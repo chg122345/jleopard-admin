@@ -11,7 +11,7 @@ package org.jleopard.system.service;
 
 import org.jleopard.common.base.JLService;
 import org.jleopard.system.entity.Logging;
-import org.jleopard.system.query.LoggingQueryDto;
+import org.jleopard.system.dto.LoggingQueryDto;
 import org.springframework.data.domain.Page;
 
 import java.util.concurrent.CompletableFuture;

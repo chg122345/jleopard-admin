@@ -12,7 +12,7 @@ package org.jleopard.system.service.ipml;
 import org.jleopard.data.base.JLServiceImpl;
 import org.jleopard.data.query.QueryWrapper;
 import org.jleopard.system.entity.Logging;
-import org.jleopard.system.query.LoggingQueryDto;
+import org.jleopard.system.dto.LoggingQueryDto;
 import org.jleopard.system.repository.LoggingRepository;
 import org.jleopard.system.service.LoggingService;
 import org.springframework.data.domain.Page;

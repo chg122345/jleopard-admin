@@ -10,6 +10,8 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.jleopard.common.base.JLEntity;
 import org.jleopard.data.annotation.DynamicQuery;
+import org.jleopard.system.config.BaseAuditListener;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -19,6 +21,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@EntityListeners(BaseAuditListener.class)
 @Table(name = "sys_user")
 @ApiModel(value="User", description="sys_user",parent = JLEntity.class)
 public class User extends JLEntity implements Serializable {

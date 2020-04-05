@@ -7,7 +7,7 @@
  * Find a way for success and not make excuses for failure.
  * </p>
  */
-package org.jleopard.system.query;
+package org.jleopard.system.dto;
 
 import lombok.Data;
 import org.jleopard.data.annotation.DynamicQuery;
